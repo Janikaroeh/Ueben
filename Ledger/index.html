@@ -17,7 +17,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<script>
+  var savedTheme = localStorage.getItem("ledger_theme") || "system";
+
+  if(savedTheme === "light" || savedTheme === "dark"){
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }
+</script>
+  <style>
   :root{
     --paper:#F2F6F1;
     --paper-outer:#1F3B35;
@@ -755,10 +762,12 @@
 
   function renderEinstellungen(){
     var html = "";
-    html += '<section class="block">';
-html += '<h2>Darstellung</h2>';
-html += '<p>Hier kannst du später zwischen Hell, Dunkel und System wählen.</p>';
-html += '</section>';
+    html += '<label for="themeSelect">Farbschema</label>';
+html += '<select id="themeSelect">';
+html += '<option value="system">System</option>';
+html += '<option value="light">Hell</option>';
+html += '<option value="dark">Dunkel</option>';
+html += '</select>';
     html += '<section class="block" style="padding-top:18px;">';
     html += '<h2>Monatliche Einnahmen</h2>';
     sortedByDay(state.config.incomes, "payDay").forEach(function(i){
@@ -895,6 +904,23 @@ html += '</section>';
     }
 
     if(state.tab === "einstellungen"){
+      var themeSelect = document.getElementById("themeSelect");
+
+if(themeSelect){
+  themeSelect.value = localStorage.getItem("ledger_theme") || "system";
+
+  themeSelect.onchange = function(){
+    var theme = themeSelect.value;
+
+    localStorage.setItem("ledger_theme", theme);
+
+    if(theme === "system"){
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+  };
+}
       var addInc = document.getElementById("addIncome");
       if(addInc) addInc.onclick = function(){
         var n = document.getElementById("newIncomeName").value.trim();
