@@ -755,6 +755,10 @@
 
   function renderEinstellungen(){
     var html = "";
+    html += '<section class="block">';
+html += '<h2>Darstellung</h2>';
+html += '<p>Hier kannst du später zwischen Hell, Dunkel und System wählen.</p>';
+html += '</section>';
     html += '<section class="block" style="padding-top:18px;">';
     html += '<h2>Monatliche Einnahmen</h2>';
     sortedByDay(state.config.incomes, "payDay").forEach(function(i){
